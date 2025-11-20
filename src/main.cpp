@@ -1,21 +1,21 @@
 #include <SFML/Graphics.hpp>
+#include "Player.h"
+#include "Engine.h"
+#include "EnemyFighter.h"
 
-int main()
-{
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
-    window.setFramerateLimit(144);
+#define widthOfWindow 1568.0f
+#define heightWindow 980.0f
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
-        }
+int main() {
+    std::srand(std::time(0));
 
-        window.clear();
-        window.display();
-    }
+    std::filesystem::path s ("SpaceFighter.png");
+
+    std::filesystem::path b ("bullet.png");
+    Player player(sf::Angle(sf::degrees(0)), b,s, 32.0f, 32.0f, 2.5f, widthOfWindow/2, heightWindow/2);
+    EnemyFighter f(sf::Angle(sf::degrees(0)),  s, 32.0f, 32.0f, 2.5f, widthOfWindow/2, heightWindow/2);
+
+    Engine engine(player, f, 50, 50);
+    engine.startGame();
+    return 0;
 }

@@ -1,0 +1,14 @@
+# Target labels
+ freetype-populate
+# Source files and their labels
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/CMakeFiles/freetype-populate
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/CMakeFiles/freetype-populate.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/CMakeFiles/freetype-populate-complete.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-build.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-configure.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-download.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-install.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-mkdir.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-patch.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-test.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/freetype-subbuild/freetype-populate-prefix/src/freetype-populate-stamp/freetype-populate-update.rule

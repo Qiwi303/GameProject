@@ -1,0 +1,14 @@
+# Target labels
+ vorbis-populate
+# Source files and their labels
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/CMakeFiles/vorbis-populate-complete.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-build.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-configure.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-download.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-install.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-mkdir.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-patch.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-test.rule
+E:/Ars/GameProject/cmake-build-debug/_deps/vorbis-subbuild/vorbis-populate-prefix/src/vorbis-populate-stamp/vorbis-populate-update.rule
