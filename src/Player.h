@@ -5,16 +5,13 @@
 #include "Bullet.h"
 #include <memory>
 
-#define widthOfWindow 1568
-#define heightWindow 980
+
 
 class Player: public SpaceShip{
 public:
-    inline Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture,  float width,  float height,  float size, float _x, float _y);
+    inline Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture,  float width,  float height,  float size, const sf::Vector2f& _pos);
     inline void update(float deltaTime, CommonData* cd) override;
     void fire(CommonData* cd) override;
-    float* getX() { return &x; }
-    float* getY() { return &y; }
 
 
 protected:
@@ -26,8 +23,8 @@ protected:
     float fireTimer = 0.0f;
 };
 
-Player::Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture, const float width, const float height, const float size, float _x, float _y):
-        bullet(_bullet), SpaceShip(_angle, texture, width, height, size, _x, _y) {
+Player::Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture, const float width, const float height, const float size, const sf::Vector2f& _pos):
+        bullet(_bullet), SpaceShip(_angle, texture, width, height, size, _pos, player) {
 
 }
 
@@ -60,24 +57,26 @@ void Player::update(const float deltaTime, CommonData* cd) {
         fireTimer += deltaTime;
     }
 
-    x += deltaTime*speed*sin(angle.asRadians());
-    y -= deltaTime*speed*cos(angle.asRadians());
+    pos.x += deltaTime*speed*sin(angle.asRadians());
+    pos.y -= deltaTime*speed*cos(angle.asRadians());
 
     rectangle.setRotation(angle);
-    rectangle.setPosition({x, y});
+    rectangle.setPosition(pos);
 }
 
 void Player::fire(CommonData* cd) {
 
-        float xLeft = x - cos(angle.asRadians())*15;
-        float yLeft = y - sin(angle.asRadians())*15;
+        sf::Vector2f left;
+        left.x = pos.x - cos(angle.asRadians())*15;
+        left.y = pos.y - sin(angle.asRadians())*15;
 
-        float xRight = x + cos(angle.asRadians())*15;
-        float yRight = y + sin(angle.asRadians())*15;
+        sf::Vector2f right;
+        right.x = pos.x + cos(angle.asRadians())*15;
+        right.y = pos.y + sin(angle.asRadians())*15;
         std::filesystem::path b("bullet.png");
 
-        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b , 1.0f, 3.0f, 4.0f, 1500, xLeft, yLeft));
-        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b, 1.0f, 3.0f, 4.0f, 1500, xRight, yRight));
+        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b , 1.0f, 3.0f, 4.0f, 1500, left, playerBullet));
+        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b, 1.0f, 3.0f, 4.0f, 1500, right, playerBullet));
 }
 
 #endif //PLAYER_H

@@ -5,17 +5,14 @@ class Entity;
 
 class CommonData{
 public:
-    explicit CommonData(std::vector<std::unique_ptr<Entity>>* _entities, float* x, float* y) : playerX(x), playerY(y), entities(_entities){}
+    explicit CommonData(std::vector<std::unique_ptr<Entity>>* _entities, sf::Vector2f* _playerPos) : playerPos(_playerPos), entities(_entities){}
 
     [[nodiscard]] std::vector<std::unique_ptr<Entity>>* get_entities() const {return entities;}
-    [[nodiscard]] float getPlayerX() const {return *playerX;}
-    [[nodiscard]] float getPlayerY() const {return *playerY;}
+    [[nodiscard]] sf::Vector2f getPlayerPos() const {return *playerPos;}
 
 protected:
     std::vector<std::unique_ptr<Entity>>* entities;
-    float* playerX;
-    float* playerY;
+    sf::Vector2f* playerPos;
 };
-
 
 #endif //COMMONDATA_H

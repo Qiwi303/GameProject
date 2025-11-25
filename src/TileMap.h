@@ -47,7 +47,6 @@ void TileMap::generate(const int width, const int height){
 	}
 }
 
-
 sf::Texture& TileMap::getTiles(const int i, const int j){
   return tileMap[tilelID[i][j]];
 }

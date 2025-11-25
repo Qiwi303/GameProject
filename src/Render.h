@@ -86,7 +86,7 @@ void Render::drawTileMap(){
 void Render::drawGame(const std::vector<std::unique_ptr<Entity>>& entities){
     window->clear();
 
-    sf::Vector2f pos = {commonData->getPlayerX(), commonData->getPlayerY()};
+    sf::Vector2f pos = commonData->getPlayerPos();
     if (pos.x - cameraWidth/2 <= 0 || pos.x + cameraWidth/2 >= mapWidthInTiles*tileSize) {
         pos.x = camera.getCenter().x;
     }
