@@ -5,12 +5,12 @@
 
 class Bullet: public Entity {
 public:
-  Bullet(sf::Angle _ang, const std::filesystem::path& _texture, const float _width, const float _height, const float _size, float _speed, const sf::Vector2f& _pos, entityType type):
-    Entity(_ang, _texture, _width, _height, _size, _pos, type), speed(_speed) {
+  Bullet(float  _maxSpeed, sf::Angle _ang, const std::filesystem::path& _texture, const float _width, const float _height, const float _size, float _speed, const sf::Vector2f& _pos, entityType type):
+    Entity(_maxSpeed, _ang, _texture, _width, _height, _size, _pos, type), speed(_speed) {
 
   }
-  void setMark(){ markToDelete = true;}
-  void update(float deltaTime, CommonData* cd) override;
+
+  inline void update(float deltaTime, CommonData* cd) override;
   float getDmg(){ return dmg; }
 private:
   float speed;
@@ -18,11 +18,19 @@ private:
 };
 
 void Bullet::update(float deltaTime, CommonData* cd){
-    pos.x += deltaTime*speed*sin(angle.asRadians());
-    pos.y -= deltaTime*speed*cos(angle.asRadians());
+    velocity.x = sin(angle.asRadians())*maxSpeed;
+    velocity.y = -cos(angle.asRadians())*maxSpeed;
+
+    pos.x += deltaTime*velocity.x;
+    pos.y += deltaTime*velocity.y;
 
     rectangle.setRotation(angle);
     rectangle.setPosition(pos);
+
+
+    //target.x = pos.x + deltaTime*velocity.x;
+    //target.y = pos.y + deltaTime*velocity.y;
+
 }
 
 #endif //BULLET_H

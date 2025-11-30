@@ -22,12 +22,12 @@
 class Engine{
 public:
     inline Engine(Player& _player, EnemyFighter& f, int _mapWidthInTiles, int _mapHeigthInTiles);
-    inline~Engine();
+    inline ~Engine();
     void startGame();
     void checkBounds();
     void update(float deltaTime);
     void checkMark();
-    void setEntitiesForGrid();
+    void checkCollision();
 
 protected:
     std::vector<std::unique_ptr<Entity>> entities;
@@ -35,7 +35,7 @@ protected:
     CommonData* commonData;
     Render* render;
     Collision* coll;
-    int mapWidthInTiles, mapHeightInTiles;
+    float mapWidthInTiles, mapHeightInTiles;
 };
 
 Engine::Engine(Player& _player, EnemyFighter& f, const int _mapWidthInTiles, const int _mapHeightInTiles): mapWidthInTiles(_mapWidthInTiles), mapHeightInTiles(_mapHeightInTiles){
@@ -47,7 +47,9 @@ Engine::Engine(Player& _player, EnemyFighter& f, const int _mapWidthInTiles, con
 
     commonData = new CommonData(&entities, entities[0]->getPos());
     render = new Render(commonData, window,  mapWidthInTiles, mapHeightInTiles);
-    coll = new Collision(48, 100, 100);
+
+    sf::FloatRect globalBound({0, 0}, {mapWidthInTiles * 96, mapHeightInTiles * 96});
+    coll = new Collision(globalBound);
 }
 
 Engine::~Engine() {
@@ -69,20 +71,18 @@ void Engine::startGame() {
                 window->close();
             }
         }
+//Заполняем дерево
+        coll->setBVH(entities);
 //Обновляем координаты
         update(deltaTime);
-//Заполняем сетку
-        setEntitiesForGrid();
-//Проверям пересечения
-        coll->allIntersections();
+//проверяем на коллизии
+        checkCollision();
 //Проверяем Объекты на удаление
         checkMark();
-//Проверяем Граница
+//Проверяем Границу
         checkBounds();
 //рисуем
         render->drawGame(entities);
-//очищаем сетку
-        coll->clearGrid();
     }
 }
 
@@ -105,16 +105,15 @@ void Engine::checkMark(){
     }
 }
 void Engine::update(float deltaTime) {
-    for (size_t i = 0; i < entities.size(); i++) {
+    for(size_t i = 0; i < entities.size(); i++) {
         entities[i]->update(deltaTime, commonData);
     }
 }
 
-void Engine::setEntitiesForGrid() {
-    for (const auto& x: entities) {
-        coll->setEntity(x.get());
+void Engine::checkCollision() {
+    for (auto& ent: entities) {
+            coll->startSearch(ent.get());
     }
 }
-
 
 #endif

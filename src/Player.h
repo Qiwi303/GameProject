@@ -9,43 +9,44 @@
 
 class Player: public SpaceShip{
 public:
-    inline Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture,  float width,  float height,  float size, const sf::Vector2f& _pos);
+    inline Player(float  maxSpeed, sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture,  float width,  float height,  float size, const sf::Vector2f& _pos);
     inline void update(float deltaTime, CommonData* cd) override;
-    void fire(CommonData* cd) override;
-
+    inline void fire(CommonData* cd) override;
 
 protected:
     std::filesystem::path bullet;
-    float speed = 0;
     friend class Engine;
     bool isPressed = false;
     bool isFire = false;
     float fireTimer = 0.0f;
+    float acceleration = 1000;
 };
 
-Player::Player(sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture, const float width, const float height, const float size, const sf::Vector2f& _pos):
-        bullet(_bullet), SpaceShip(_angle, texture, width, height, size, _pos, player) {
+Player::Player(float  maxSpeed, sf::Angle _angle, const std::filesystem::path& _bullet, const std::filesystem::path& texture, const float width, const float height, const float size, const sf::Vector2f& _pos):
+        bullet(_bullet), SpaceShip( maxSpeed, _angle, texture, width, height, size, _pos, player) {
 
 }
 
 void Player::update(const float deltaTime, CommonData* cd) {
     if (isKeyPressed(sf::Keyboard::Scancode::D)){
-        angle += sf::degrees(5);
+        angle += sf::degrees(2.5);
     }
 
     if (isKeyPressed(sf::Keyboard::Scancode::A)){
-        angle -= sf::degrees(5);
+        angle -= sf::degrees(2.5);
     }
 
     if(isKeyPressed(sf::Keyboard::Scancode::W)) {
-        if (speed < 500) speed+=50.f;
-
-    }
-    else if (speed > 0) {
-        speed -= 10.0f;
-        isPressed = true;
+        velocity.x += sin(angle.asRadians())*acceleration*deltaTime;
+        velocity.y += -cos(angle.asRadians())*acceleration*deltaTime;
+        const float length = sqrt(velocity.x*velocity.x + velocity.y*velocity.y);
+        if (length>maxSpeed) {
+            velocity.x = velocity.x*maxSpeed/length;
+            velocity.y = velocity.y*maxSpeed/length;
+        }
     }else {
-        isPressed = false;
+        velocity.x *= 0.95;
+        velocity.y *= 0.95;
     }
 
     if (isButtonPressed(sf::Mouse::Button::Left) && !isFire && fireTimer > 0.2) {
@@ -57,8 +58,8 @@ void Player::update(const float deltaTime, CommonData* cd) {
         fireTimer += deltaTime;
     }
 
-    pos.x += deltaTime*speed*sin(angle.asRadians());
-    pos.y -= deltaTime*speed*cos(angle.asRadians());
+    pos.x += deltaTime*velocity.x;
+    pos.y += deltaTime*velocity.y;
 
     rectangle.setRotation(angle);
     rectangle.setPosition(pos);
@@ -75,8 +76,9 @@ void Player::fire(CommonData* cd) {
         right.y = pos.y + sin(angle.asRadians())*15;
         std::filesystem::path b("bullet.png");
 
-        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b , 1.0f, 3.0f, 4.0f, 1500, left, playerBullet));
-        cd->get_entities()->push_back(std::make_unique<Bullet>(angle, b, 1.0f, 3.0f, 4.0f, 1500, right, playerBullet));
+        cd->get_entities()->push_back(std::make_unique<Bullet>(1600, angle, b , 1.0f, 3.0f, 4.0f, 1500, left, playerBullet));
+        cd->get_entities()->push_back(std::make_unique<Bullet>(1600, angle, b, 1.0f, 3.0f, 4.0f, 1500, right, playerBullet));
 }
+
 
 #endif //PLAYER_H

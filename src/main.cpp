@@ -10,10 +10,10 @@ int main() {
     std::srand(std::time(0));
 
     std::filesystem::path s ("SpaceFighter.png");
-
     std::filesystem::path b ("bullet.png");
-    Player player(sf::Angle(sf::degrees(0)), b,s, 32.0f, 32.0f, 2.5f, {widthOfWindow/2, heightWindow/2});
-    EnemyFighter f(sf::Angle(sf::degrees(0)),  s, 32.0f, 32.0f, 2.5f, {widthOfWindow/2, heightWindow/2});
+
+    Player player(600, sf::Angle(sf::degrees(0)), b,s, 64.0f, 64.0f, 1.f, {widthOfWindow/2, heightWindow/2});
+    EnemyFighter f(150, sf::Angle(sf::degrees(0)),  s, 64.0f, 64.0f, 1.f, {(widthOfWindow - 100)/2, (heightWindow - 100)/2});
 
     Engine engine(player, f, 50, 50);
     engine.startGame();
