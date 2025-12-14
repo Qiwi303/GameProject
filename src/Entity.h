@@ -14,21 +14,26 @@ enum entityType {
 
 class Entity{
 public:
-        inline Entity(sf::Angle _angle, const std::filesystem::path& _texture,  float _width,  float _height,  float _size, const sf::Vector2f& _pos, entityType _type);
-        virtual ~Entity(){}
+
+        inline Entity( sf::Angle angle, const sf::Texture& _texture,  float _width,  float _height,  float _size, sf::Vector2f _pos, float _maxSpeed, float _acceleration, entityType _type);
+        virtual ~Entity()=default;
         virtual void update(float deltaTime, CommonData* cd) = 0;
-        const sf::RectangleShape& getRectangle(){return rectangle;}
+
+
+
+//getters
         sf::Vector2f* getPos(){ return &pos;}
         entityType getType()const{ return type; }
         bool getMark()const{ return markToDelete; }
+        const sf::RectangleShape& getRectangle(){return rectangle;}
 
 protected:
     sf::Texture texture;
     sf::RectangleShape rectangle;
-    float width, height, size;
     sf::Vector2f pos;
+    sf::Vector2f velocity = {1, 1};
     sf::Angle angle = sf::degrees(0);;
-    float speed = 0;
+    float maxSpeed, acceleration;
     bool markToDelete = false;
 
     entityType type;
@@ -36,13 +41,12 @@ protected:
     friend class CommonData;
 };
 
-Entity::Entity(sf::Angle _angle, const std::filesystem::path& _texture, const float _width, const float _height, const float _size, const sf::Vector2f& _pos, entityType _type):
-    angle(_angle), width(_width), height(_height), size(_size), pos(_pos), type(_type) {
-    rectangle.setPosition(pos);
-    if (!texture.loadFromFile(_texture)) std::cout<<"Failed to load texture"<<std::endl;
-
-    rectangle.setSize({width*size, height*size});
+Entity::Entity(const sf::Angle _angle, const sf::Texture& _texture, const float width, const float height, const float size,
+                const  sf::Vector2f _pos, float _maxSpeed, float acceleration, entityType _type):
+                    angle(_angle), pos(_pos), type(_type), maxSpeed(_maxSpeed), acceleration(acceleration), texture(_texture){
     rectangle.setTexture(&texture);
+    rectangle.setPosition(pos);
+    rectangle.setSize({width*size, height*size});
 }
 
 

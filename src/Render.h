@@ -32,7 +32,7 @@ Render::Render(CommonData* _commonData, sf::RenderWindow* _window, int _mapWidth
     window(_window), mapWidthInTiles(_mapWidthInTiles), mapHeightInTiles(_mapHeightInTiles) {
     tileMap = new TileMap(mapWidthInTiles, _mapHeightInTiles);
     sf::RenderTexture atlas;
-    atlas.resize({tileSize*8,tileSize});
+    atlas.resize({tileSize*20,tileSize});
     quad.setPrimitiveType(sf::PrimitiveType::Triangles);
     quad.resize(50*50*6);
     camera.setSize({cameraWidth, cameraHeight});
@@ -60,7 +60,7 @@ Render::Render(CommonData* _commonData, sf::RenderWindow* _window, int _mapWidth
     }
 
   	atlas.clear();
-	for(int i = 0; i < 8; ++i){
+	for(int i = 0; i < 20; ++i){
   		sf::Sprite tmp(tileMap->getTiles(i));
         tmp.setPosition({i*tileSize*1.f, 0.f});
         atlas.draw(tmp);

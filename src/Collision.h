@@ -40,8 +40,8 @@ void Collision::setEntity(Entity* entity){
   if (index.x < 0 || index.x >= grid[0].size() ||
         index.y < 0 || index.y >= grid.size()) {
     return;
-
         }
+
   entityType type = entity->getType();
   switch(type) {
     case player:

@@ -5,24 +5,25 @@
 
 class Bullet: public Entity {
 public:
-  Bullet(sf::Angle _ang, const std::filesystem::path& _texture, const float _width, const float _height, const float _size, float _speed, const sf::Vector2f& _pos, entityType type):
-    Entity(_ang, _texture, _width, _height, _size, _pos, type), speed(_speed) {
-
-  }
-  void setMark(){ markToDelete = true;}
+  inline Bullet(sf::Angle ang, const sf::Texture& texture,  float width,  float height,  float size, sf::Vector2f& pos,  float  maxSpeed, float acceleration, entityType type);
+  void setMark() { markToDelete = true;}
   void update(float deltaTime, CommonData* cd) override;
-  float getDmg(){ return dmg; }
+  float getDmg() { return dmg; }
 private:
   float speed;
-  float dmg = 10;
+  float dmg = 20;
 };
 
 void Bullet::update(float deltaTime, CommonData* cd){
-    pos.x += deltaTime*speed*sin(angle.asRadians());
-    pos.y -= deltaTime*speed*cos(angle.asRadians());
+    pos.x += deltaTime*maxSpeed*sin(angle.asRadians());
+    pos.y -= deltaTime*maxSpeed*cos(angle.asRadians());
 
     rectangle.setRotation(angle);
     rectangle.setPosition(pos);
 }
+
+Bullet::Bullet(sf::Angle ang, const sf::Texture& texture, const float width, const float height, const float size,
+                 sf::Vector2f& pos, const float  maxSpeed, const float acceleration, entityType type):
+                    Entity(ang, texture, width, height, size, pos, maxSpeed, acceleration, type){}
 
 #endif //BULLET_H

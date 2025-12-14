@@ -9,19 +9,26 @@
 
 class SpaceShip: public Entity{
 public:
-    SpaceShip(sf::Angle _angle, const std::filesystem::path& texture, const float width, const float height, const float size, const sf::Vector2f& _pos, entityType type ): Entity(_angle, texture, width, height, size, _pos, type) {
-        float centerX = rectangle.getGeometricCenter().x;
-        float centerY = rectangle.getGeometricCenter().y*1.25f;
-        rectangle.setOrigin({centerX, centerY});
-    }
-
-    void takeDmg(float dmg);
+    inline SpaceShip(sf::Angle angle, const sf::Texture& texture,  float width,  float height,
+              float size,const sf::Vector2f& pos,  float maxSpeed, float _acceleration, entityType type);
+    inline void takeDmg(float dmg);
     inline virtual void fire(CommonData* cd) = 0;
     inline  void onCollision(Entity* entity);
 
 protected:
-    double health = 400;
+    double health = 500;
+    bool isFire = false;
+    float fireTimer = 0.0f;
 };
+
+SpaceShip::SpaceShip(sf::Angle angle, const sf::Texture& texture, const float width, const float height, const float size, const sf::Vector2f& pos,
+                     const float maxSpeed, const float _acceleration, const entityType type):
+                        Entity(angle, texture, width, height, size, pos, maxSpeed, _acceleration, type) {
+
+    float centerX = rectangle.getGeometricCenter().x;
+    float centerY = rectangle.getGeometricCenter().y*1.25f;
+    rectangle.setOrigin({centerX, centerY});
+}
 
 void SpaceShip::onCollision(Entity* entity) {
     entityType type = entity->getType();

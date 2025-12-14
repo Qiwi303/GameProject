@@ -23,16 +23,28 @@ protected:
     std::vector<sf::Texture> tileMap;
 };
 
-TileMap::TileMap(const int width,const int height): generator(std::random_device{}()), distribution(1, 8){
-	tileMap.resize(8);
-    tileMap[0].loadFromFile("background0.png");
-    tileMap[1].loadFromFile("background1.png");
-    tileMap[2].loadFromFile("background2.png");
-    tileMap[3].loadFromFile("background3.png");
-    tileMap[4].loadFromFile("Star1.png");
-    tileMap[5].loadFromFile("Star2.png");
-    tileMap[6].loadFromFile("Star3.png");
-    tileMap[7].loadFromFile("Star4.png");
+TileMap::TileMap(const int width,const int height): generator(std::random_device{}()), distribution(1, 20){
+	tileMap.resize(20);
+    tileMap[0].loadFromFile("tile-1.png");
+    tileMap[1].loadFromFile("tile-2.png");
+    tileMap[2].loadFromFile("tile-3.png");
+    tileMap[3].loadFromFile("tile-4.png");
+    tileMap[4].loadFromFile("tile-5.png");
+    tileMap[5].loadFromFile("tile-6.png");
+    tileMap[6].loadFromFile("tile-7.png");
+    tileMap[7].loadFromFile("tile-8.png");
+    tileMap[8].loadFromFile("tile-9.png");
+    tileMap[9].loadFromFile("tile-10.png");
+    tileMap[10].loadFromFile("tile-11.png");
+    tileMap[11].loadFromFile("tile-12.png");
+    tileMap[12].loadFromFile("tile-13.png");
+    tileMap[13].loadFromFile("tile-14.png");
+    tileMap[14].loadFromFile("tile-15.png");
+    tileMap[15].loadFromFile("tile-16.png");
+    tileMap[16].loadFromFile("tile-17.png");
+    tileMap[17].loadFromFile("tile-18.png");
+    tileMap[18].loadFromFile("tile-19.png");
+    tileMap[19].loadFromFile("tile-20.png");
 
     tilelID.resize(height);
     generate(width, height);

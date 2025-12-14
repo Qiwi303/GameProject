@@ -1,33 +1,34 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "SpaceShip.h"
 #include "Entity.h"
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <cmath>
 #include "Player.h"
 #include <vector>
 #include <memory>
 #include "CommonData.h"
-#include "EnemyFighter.h"
 #include "Render.h"
 #include "Collision.h"
+#include "LvLBuilder.h"
+#include "ResourceManager.h"
 
 #define width 1920
 #define height 1080
 
+#define widthOfWindow 50*96
+#define heightWindow 50*96
 
 
 class Engine{
 public:
-    inline Engine(Player& _player, EnemyFighter& f, int _mapWidthInTiles, int _mapHeigthInTiles);
-    inline~Engine();
+    inline Engine(int _mapWidthInTiles, int _mapHeigthInTiles);
+    inline ~Engine();
     void startGame();
     void checkBounds();
     void update(float deltaTime);
     void checkMark();
     void setEntitiesForGrid();
+    void setTextures();
 
 protected:
     std::vector<std::unique_ptr<Entity>> entities;
@@ -35,19 +36,25 @@ protected:
     CommonData* commonData;
     Render* render;
     Collision* coll;
+    LvLBuilder* lvlBuilder;
+    ResourceManager* manager;
     int mapWidthInTiles, mapHeightInTiles;
+
 };
 
-Engine::Engine(Player& _player, EnemyFighter& f, const int _mapWidthInTiles, const int _mapHeightInTiles): mapWidthInTiles(_mapWidthInTiles), mapHeightInTiles(_mapHeightInTiles){
-    entities.push_back(std::make_unique<Player>(_player));
-    entities.push_back(std::make_unique<EnemyFighter>(f));
-
+Engine::Engine(const int _mapWidthInTiles, const int _mapHeightInTiles): mapWidthInTiles(_mapWidthInTiles), mapHeightInTiles(_mapHeightInTiles){
     window = new  sf::RenderWindow(sf::VideoMode({width, height}), "SFML window");
     window->setFramerateLimit(60);
 
-    commonData = new CommonData(&entities, entities[0]->getPos());
+    manager = new ResourceManager();
+    setTextures();
+    commonData = new CommonData(*manager, &entities, window);
+    lvlBuilder = new LvLBuilder(*manager, commonData, {100}, 2000, {widthOfWindow/2, heightWindow/2});
+    lvlBuilder->SpawnPlayer();
+    commonData->setPlayerPos(entities[0]->getPos());
     render = new Render(commonData, window,  mapWidthInTiles, mapHeightInTiles);
     coll = new Collision(48, 100, 100);
+    std::cout<<(commonData->getPlayerPos()).x<<" "<<commonData->getPlayerPos().y<<std::endl;
 }
 
 Engine::~Engine() {
@@ -55,6 +62,8 @@ Engine::~Engine() {
     delete commonData;
     delete render;
     delete coll;
+    delete lvlBuilder;
+    delete manager;
 }
 
 void Engine::startGame() {
@@ -69,6 +78,8 @@ void Engine::startGame() {
                 window->close();
             }
         }
+//спавним врагов
+        lvlBuilder->SpawnEnemy();
 //Обновляем координаты
         update(deltaTime);
 //Заполняем сетку
@@ -77,7 +88,7 @@ void Engine::startGame() {
         coll->allIntersections();
 //Проверяем Объекты на удаление
         checkMark();
-//Проверяем Граница
+//Проверяем Границу
         checkBounds();
 //рисуем
         render->drawGame(entities);
@@ -98,6 +109,9 @@ void Engine::checkBounds() {
 void Engine::checkMark(){
     for (auto it = entities.begin(); it!=entities.end();) {
         if ((*it)->getMark()) {
+            if ((*it)->getType() == enemy) {
+                lvlBuilder->decEnemy();
+            }
             it = entities.erase(it);
         } else {
             ++it;
@@ -114,6 +128,13 @@ void Engine::setEntitiesForGrid() {
     for (const auto& x: entities) {
         coll->setEntity(x.get());
     }
+}
+
+void Engine::setTextures() {
+    manager->setTexture("player", "SpaceFighter.png");
+    manager->setTexture("enemy", "enemy.png");
+    manager->setTexture("playerBullet", "bullet.png");
+    manager->setTexture("enemyBullet", "enemyBullet.png");
 }
 
 
